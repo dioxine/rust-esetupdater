@@ -1,12 +1,14 @@
-use log::error;
+use log::{error,debug};
 use syslog::{Error, Facility};
 
 pub fn push_into_syslog(string: String) -> Result<(), Error> {
     syslog::init(
         Facility::LOG_USER,
         log::LevelFilter::Debug,
-        Some("My app name"),
+        Some("rust-esetupdater"),
     )?;
+    debug!("this is a debug {}", "message");
+    error!("this is an error!");
     error!("{string}");
     Ok(())
 }
