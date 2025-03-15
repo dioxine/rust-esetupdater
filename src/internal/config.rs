@@ -60,7 +60,7 @@ pub fn get_config_and_print_it(filename: &str) -> Config {
             config
         },
         Err(error) => {
-            push_into_syslog(format!("Error reading config file {filename}: {}", error));
+            push_into_syslog(format!("Error reading config file {filename}: {}", error)).unwrap();
             error!("Error reading config file {filename}: {}", error);
             error!("You can specify a custom config file name as the first argument.");
             std::process::exit(1);
