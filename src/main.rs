@@ -51,7 +51,7 @@ fn main() -> std::io::Result<()> {
 
     let nups_paths: Vec<Nups> = compare_old_with_new(&update_old.map, &update_new.map, platforms);
 
-    download_nup_files(nups_paths, &local_path, &creds);
+    download_nup_files(nups_paths, &root_dir, &creds);
 
     copy_update_ver_file(&local_path, &update_ver_new, &update_ver_old)?;
     Ok(())
