@@ -1,6 +1,8 @@
 use log::{error, info};
 use std::fs;
 
+use super::logger::push_into_syslog;
+
 use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct Config {
@@ -58,6 +60,7 @@ pub fn get_config_and_print_it(filename: &str) -> Config {
             config
         },
         Err(error) => {
+            push_into_syslog(format!("Error reading config file {filename}: {}", error));
             error!("Error reading config file {filename}: {}", error);
             error!("You can specify a custom config file name as the first argument.");
             std::process::exit(1);

@@ -1,3 +1,4 @@
+use super::logger::push_into_syslog;
 use log::{info, warn, error};
 use std::fs::{File, copy, create_dir_all, exists, metadata};
 use std::path::Path;
@@ -42,6 +43,7 @@ pub fn copy_update_ver_file(
     let to = local_path_fixer(local_directory, update_ver_old);
     let _result = match copy(&from, &to) {
         Ok(_val) => {
+            push_into_syslog(format!("Finished successfully!"));
             info!("File update.ver was copied:");
             info!("from path:{}", from);
             info!("to path:{}", to);
@@ -49,6 +51,7 @@ pub fn copy_update_ver_file(
             info!("-------------------------------------------------------------------------------------------------------------");
         }
         Err(err) => {
+            push_into_syslog(format!("Error copying file: {}", err));
             error!("Error copying file: {}", err);
             std::process::exit(1);
         }
