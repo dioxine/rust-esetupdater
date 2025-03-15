@@ -23,14 +23,19 @@ pub fn download_update_ver_file(
 }
 
 pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credentials) {
+    let mut counter: u32 = 0;
     for nup_path in nups_paths {
         println!(
             "-------------------------------------------------------------------------------------------------------------"
         );
         println!("{}", &nup_path.description);
         println!("nup_path: {}", remote_path_fixer(&creds, &nup_path.path));
-        let _result = download_file(&root_dir, &nup_path.path, &creds).unwrap();
+        let result = download_file(&root_dir, &nup_path.path, &creds);
+        if result.is_ok() {
+            counter += 1;
+        }
     }
+    println!("Total count {} of NUP-files downloaded.", counter);
 }
 
 pub fn download_file(
