@@ -1,3 +1,4 @@
+use log::{error, info};
 use super::structs::Nups;
 use std::collections::HashMap;
 
@@ -28,7 +29,7 @@ pub fn compare_old_with_new(
                         });
                     }
                     None => {
-                        println!("nup url is missing in update.ver")
+                        error!("nup url is missing in update.ver")
                     }
                 }
             }
@@ -49,14 +50,14 @@ pub fn compare_old_with_new(
                     });
                 }
                 None => {
-                    println!("nup url is missing in update.ver")
+                    error!("nup url is missing in update.ver")
                 }
             }
         }
     }
 
     if old == new {
-        println!(
+        info!(
             "There is no changes in \"update.ver\" file for chosen platforms. Nothing to download!"
         );
         return nups_paths;
