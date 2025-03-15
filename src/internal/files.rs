@@ -1,4 +1,5 @@
-use std::fs::{File, copy, create_dir_all, exists};
+use log::{info, warn, error};
+use std::fs::{File, copy, create_dir_all, exists, metadata};
 use std::path::Path;
 
 use super::helpers::local_path_fixer;
@@ -9,12 +10,23 @@ pub fn check_or_create_empty(local_path: &str, update_ver_old: &str) {
     let _ = create_dir_all(path2.parent().unwrap());
 
     let is_exits = exists(&path).unwrap();
-    println!("Checking if old update.ver file exists...");
-    if is_exits {
-        println!("{} exists!", path);
+    info!("Checking if old .update.ver file exists...");
+
+    let filesize = metadata(&path).unwrap();
+
+    if is_exits && filesize.len() != 0 {
+        info!(
+            "{} exists! Starting differential downloadig of fresh NUP-files.",
+            path
+        );
+    } else if is_exits && filesize.len() == 0 {
+        warn!(
+            "{} exists but it is empty! Starting full downloading of all NUP-files.",
+            path
+        );
     } else {
-        println!(
-            "{:#?} does not exist! Creating empty one.",
+        warn!(
+            "{:#?} does not exist! Creating empty one and starting full downloading of all NUP-files.",
             path2.parent().unwrap()
         );
         let _empty_file = File::create_new(path.as_str()).unwrap();
@@ -25,12 +37,20 @@ pub fn copy_update_ver_file(
     local_directory: &str,
     update_ver_new: &str,
     update_ver_old: &str,
-) -> std::io::Result<()> {
+) {
     let from = local_path_fixer(local_directory, update_ver_new);
     let to = local_path_fixer(local_directory, update_ver_old);
-    println!("File update.ver was copied:");
-    println!("from path:{}", from);
-    println!("to path:{}", to);
-    copy(from, to)?;
-    Ok(())
+    let _result = match copy(&from, &to) {
+        Ok(_val) => {
+            info!("File update.ver was copied:");
+            info!("from path:{}", from);
+            info!("to path:{}", to);
+            info!("Finished successfully!");
+            info!("-------------------------------------------------------------------------------------------------------------");
+        }
+        Err(err) => {
+            error!("Error copying file: {}", err);
+            std::process::exit(1);
+        }
+    };
 }

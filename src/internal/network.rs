@@ -1,4 +1,5 @@
 use super::structs::Credentials;
+use log::{error, info};
 use reqwest::Client;
 use reqwest::Error;
 use std::fs::{File, create_dir_all};
@@ -14,9 +15,11 @@ pub fn download_update_ver_file(
     creds: &Credentials,
 ) {
     let _result = match download_file(local_path, update_ver_file_with_path, creds) {
-        Ok(val) => val,
+        Ok(val) => {
+            info!("File {val} downloaded successfully");
+        }
         Err(err) => {
-            eprintln!("Error while downloading file: {}", err);
+            error!("Error while downloading file: {}", err);
             std::process::exit(1);
         }
     };
@@ -25,17 +28,23 @@ pub fn download_update_ver_file(
 pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credentials) {
     let mut counter: u32 = 0;
     for nup_path in nups_paths {
-        println!(
+        info!(
             "-------------------------------------------------------------------------------------------------------------"
         );
-        println!("{}", &nup_path.description);
-        println!("nup_path: {}", remote_path_fixer(&creds, &nup_path.path));
-        let result = download_file(&root_dir, &nup_path.path, &creds);
-        if result.is_ok() {
-            counter += 1;
-        }
+        nup_path.description.split("\n").for_each(|line| info!("{}", line));
+        info!("nup_path: {}", remote_path_fixer(&creds, &nup_path.path));
+        let _result = match download_file(&root_dir, &nup_path.path, &creds) {
+            Ok(val) => {
+                counter += 1;
+                info!("File {val} downloaded successfully");
+            }
+            Err(err) => {
+                error!("Error while downloading file: {}", err);
+                std::process::exit(1);
+            }
+        };
     }
-    println!("Total count {} of NUP-files downloaded.", counter);
+    info!("Total count {} of NUP-files downloaded.", counter);
 }
 
 pub fn download_file(
@@ -82,18 +91,12 @@ pub fn download_file(
         }
     }
 
-    match download_async(
+    download_async(
         &url,
         &local_path,
         &filename_with_path,
         &creds.user_agent,
         &creds.user,
         &creds.password,
-    ) {
-        Ok(val) => {
-            println!("File {val} downloaded successfully");
-            Ok(val)
-        }
-        Err(err) => Err(err),
-    }
+    )
 }
