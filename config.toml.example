@@ -31,7 +31,7 @@ user = "my_user"
 password = "my_password"
 
 # user_agent string necessary for downloading updates
-4user_agent = "EEA Update (Windows; U; 64bit; BPC 11.0.2044.0; OS: 10.0.26100 SP 0.0 NT; HWF: 921b979f-686d-4fa2-bebb-3ffe2ab877da; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2107)"
+user_agent = "EEA Update (Windows; U; 64bit; BPC 11.0.2044.0; OS: 10.0.26100 SP 0.0 NT; HWF: 921b979f-686d-4fa2-bebb-3ffe2ab877da; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2107)"
 
 [settings]
 # list of desired platforms. Full list: ["x64", "x86", "arm"] will download updates for all platforms.
