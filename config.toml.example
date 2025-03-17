@@ -1,0 +1,38 @@
+### Example of configuration file
+##  Edit it and rename to config.toml to make it work automatically
+
+[local]
+# path to root directory where updates are stored. can be absolute or relative. Example: "/var/www/public_html"
+root_dir = "./web_test"
+
+# additional subdirectory. Example: "eset_upd", resulting path will be "/var/www/public_html/eset_upd"
+# its good idea to try it empty "" firstly
+sub_dir = "eset_upd"
+
+# path to new update file. no need to change. should start with "dll/" or "/dll/" to make it work.
+# slashes in all paths are sanitized
+update_ver_new = "/dll/update.ver"
+
+# path to old update file. same as above
+update_ver_old = "/dll/.update.ver"
+
+[remote]
+# host address where to download updates from. can use HTTPs protocol and custom port too if explicitly specified in url
+host = "http://example.com"
+
+# additional suffix is host uses non-standart directory structure. resulting path will be "http://example.com/eset_upd"
+# its good idea to try it empty "" firstly
+host_path = "eset_upd"
+
+# username for basic Auth if used
+user = "my_user"
+
+# password for basic Auth if used
+password = "my_password"
+
+# user_agent string necessary for downloading updates
+4user_agent = "EEA Update (Windows; U; 64bit; BPC 11.0.2044.0; OS: 10.0.26100 SP 0.0 NT; HWF: 921b979f-686d-4fa2-bebb-3ffe2ab877da; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2107)"
+
+[settings]
+# list of desired platforms. Full list: ["x64", "x86", "arm"] will download updates for all platforms.
+platforms = ["x64"]
