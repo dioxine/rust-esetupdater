@@ -1,37 +1,16 @@
-use simplelog::*;
-use std::fs::File;
-use chrono::offset::Local;
+mod internal;
+use internal::*;
 
 use args::get_command_line_args;
 use config::get_config_and_print_it;
 use files::{check_or_create_empty, copy_update_ver_file};
+use logger;
 use network::{download_nup_files, download_update_ver_file};
 use process::compare_old_with_new;
 use structs::{Credentials, New, Nups, Old, UpdateVer};
 
-mod internal;
-use internal::{args, config, files, network, process, structs};
-
 fn main() -> std::io::Result<()> {
-
-    let now = Local::now();
-    let custom_datetime_format = now.format("%d%m%Y_%H%M%S_");
-
-    // Logger settings
-    // overriding default config to use local timezone offset
-    let log_config = ConfigBuilder::new()
-        .set_time_offset_to_local()
-        .unwrap()
-        .build();
-    
-    CombinedLogger::init(vec![
-        WriteLogger::new(
-            LevelFilter::Info,
-            log_config,
-            File::create(custom_datetime_format.to_string() + "result.log").unwrap(),
-        ),
-    ])
-    .unwrap();
+    logger::init();
 
     let filename = get_command_line_args();
 

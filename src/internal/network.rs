@@ -60,7 +60,8 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
             }
         };
     }
-    pb.finish_print("done");
+    pb.finish_print("\n");
+    println!("Total count {} of NUP-files downloaded.", counter);
     info!("Total count {} of NUP-files downloaded.", counter);
 }
 
