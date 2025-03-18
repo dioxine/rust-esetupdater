@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - Fixed config.toml.example
 
+### 🚜 Refactor
+
+- Handling errors is straightforward and terminal output has no mess now
+
 ### ⚙️ Miscellaneous Tasks
 
 - Logging to filename with timestamp
