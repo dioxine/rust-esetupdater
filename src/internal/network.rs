@@ -29,9 +29,7 @@ pub fn download_update_ver_file(
 }
 
 pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credentials) {
-    println!("Parsed update.ver successfully. Found {} NUP-modules for chosen platform(s).\n", nups_paths.len());
     println!("Downloading NUP-files:");
-
     let mut pb = ProgressBar::new(nups_paths.len() as u64);
     pb.format("╢▌▌░╟");
 

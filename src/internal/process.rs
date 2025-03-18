@@ -2,11 +2,11 @@ use super::structs::Nups;
 use log::{error, info};
 use std::collections::HashMap;
 
-pub fn compare_old_with_new(
+pub fn compare_and_get_nups_paths(
     old: &HashMap<String, HashMap<String, Option<String>>>,
     new: &HashMap<String, HashMap<String, Option<String>>>,
     platforms: Vec<String>,
-) -> Vec<Nups> {
+) -> Option<Vec<Nups>> {
     let mut nups_paths: Vec<Nups> = vec![];
     for (key, el) in new {
         if old.contains_key(key)                                            // Checks old map has correspongin key from new map
@@ -58,12 +58,17 @@ pub fn compare_old_with_new(
             }
         }
     }
-
+    
+    println!("Parsed update.ver successfully. Found {} NUP-modules for chosen platform(s).", nups_paths.len());
+    
     if old == new {
+        println!(
+            "There is no changes in \"update.ver\" file for chosen platforms. Nothing to download."
+        );
         info!(
             "There is no changes in \"update.ver\" file for chosen platforms. Nothing to download."
         );
-        return nups_paths;
+        return None;
     }
-    nups_paths
+    Some(nups_paths)
 }

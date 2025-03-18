@@ -1,4 +1,5 @@
 mod internal;
+
 use internal::*;
 
 use args::get_command_line_args;
@@ -6,8 +7,8 @@ use config::get_config_and_print_it;
 use files::{check_or_create_empty, copy_update_ver_file};
 use logger;
 use network::{download_nup_files, download_update_ver_file};
-use process::compare_old_with_new;
-use structs::{Credentials, New, Nups, Old, UpdateVer};
+use process::compare_and_get_nups_paths;
+use structs::{Credentials, New, Old, UpdateVer};
 
 fn main() -> std::io::Result<()> {
     logger::init();
@@ -43,9 +44,11 @@ fn main() -> std::io::Result<()> {
     update_old.deserialize(&local_path, &update_ver_old);
     update_new.deserialize(&local_path, &update_ver_new);
 
-    let nups_paths: Vec<Nups> = compare_old_with_new(&update_old.map, &update_new.map, platforms);
-
-    download_nup_files(nups_paths, &root_dir, &creds);
+    if let Some(nups_paths) =
+        compare_and_get_nups_paths(&update_old.map, &update_new.map, platforms)
+    {
+        download_nup_files(nups_paths, &root_dir, &creds);
+    }
 
     copy_update_ver_file(&local_path, &update_ver_new, &update_ver_old);
     Ok(())
