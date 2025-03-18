@@ -4,6 +4,7 @@ debug/
 target/
 web_test/
 config.toml
+*result.log
 result.log
 release.sh
 push.sh

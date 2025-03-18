@@ -20,7 +20,9 @@ pub fn download_update_ver_file(
             info!("File {val} downloaded successfully");
         }
         Err(err) => {
+            println!("\nError while downloading file: {}\nProgram stopped", err);
             error!("Error while downloading file: {}", err);
+            error!("Program stopped");
             std::process::exit(1);
         }
     };
@@ -51,7 +53,9 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
                 pb.inc();
             }
             Err(err) => {
+                println!("\nError while downloading file: {}\nProgram stopped", err);
                 error!("Error while downloading file: {}", err);
+                error!("Program stopped");
                 std::process::exit(1);
             }
         };

@@ -1,5 +1,6 @@
 use simplelog::*;
 use std::fs::File;
+use chrono::offset::Local;
 
 use args::get_command_line_args;
 use config::get_config_and_print_it;
@@ -12,6 +13,10 @@ mod internal;
 use internal::{args, config, files, network, process, structs};
 
 fn main() -> std::io::Result<()> {
+
+    let now = Local::now();
+    let custom_datetime_format = now.format("%d%m%Y_%H%M%S_");
+
     // Logger settings
     // overriding default config to use local timezone offset
     let log_config = ConfigBuilder::new()
@@ -23,7 +28,7 @@ fn main() -> std::io::Result<()> {
         WriteLogger::new(
             LevelFilter::Info,
             log_config,
-            File::create("result.log").unwrap(),
+            File::create(custom_datetime_format.to_string() + "result.log").unwrap(),
         ),
     ])
     .unwrap();
