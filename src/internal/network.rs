@@ -58,12 +58,11 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
             }
         };
     }
-    pb.finish_print("\n");
-    println!("Total count {} of NUP-files downloaded.", counter);
+    println!("\nTotal count {} of NUP-files downloaded.", counter);
     info!("Total count {} of NUP-files downloaded.", counter);
 }
 
-pub fn download_file(
+fn download_file(
     local_path: &str,
     filename_with_path: &str,
     creds: &Credentials,

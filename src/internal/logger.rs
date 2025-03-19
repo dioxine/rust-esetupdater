@@ -18,10 +18,10 @@ pub fn init() {
         .unwrap()
         .build();
 
-    CombinedLogger::init(vec![WriteLogger::new(
+    WriteLogger::init(
         LevelFilter::Info,
         log_config,
         File::create(get_time_now() + "result.log").unwrap(),
-    )])
+    )
     .unwrap();
 }
