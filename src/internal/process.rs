@@ -9,11 +9,11 @@ pub fn compare_and_get_nups_paths(
 ) -> Option<Vec<Nups>> {
     let mut nups_paths: Vec<Nups> = vec![];
     for (key, el) in new {
-        if old.contains_key(key)                                            // Checks old map has correspongin key from new map
+        if old.contains_key(key)                                            // Checks old map has corresponging key from new map
             && el.contains_key("platform")                                  // Checks if module section has "platform" key
-            && platforms.contains(&el["platform"].as_ref().unwrap())        // Checking is platform key in map has value that 
-                                                                            // is equal to any of elements in "platform" vector of strings
-
+            && platforms.contains(&el["platform"].as_ref().unwrap())
+        // Checking is platform key in map has value that
+        // is equal to any of elements in "platform" vector of strings
         {
             if el["versionid"] != old[key]["versionid"] {
                 //
@@ -23,6 +23,16 @@ pub fn compare_and_get_nups_paths(
                     el["versionid"].as_ref().unwrap(),
                     el["file"].as_ref().unwrap()
                 );
+
+
+                //DEBUG insertion
+                if key.contains("REVERSE") {
+                    println!("-------PROBLEMATIC KEY {key}-------");
+                    match &el["file"] {
+                        Some(val) => println!("---PROBLEMATIC NUP-URL {}---", val),
+                        None => error!("nup url is missing in update.ver")
+                    }
+                }
 
                 match &el["file"] {
                     Some(value) => {
@@ -58,9 +68,12 @@ pub fn compare_and_get_nups_paths(
             }
         }
     }
-    
-    println!("Parsed update.ver successfully. Found {} NUP-modules for chosen platform(s).", nups_paths.len());
-    
+
+    println!(
+        "Parsed update.ver successfully. Found {} NUP-modules for chosen platform(s).",
+        nups_paths.len()
+    );
+
     if old == new {
         println!(
             "There is no changes in \"update.ver\" file for chosen platforms. Nothing to download."

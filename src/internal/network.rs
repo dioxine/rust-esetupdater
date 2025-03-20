@@ -44,6 +44,15 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
             .split("\n")
             .for_each(|line| info!("{}", line));
         info!("nup_path: {}", remote_path_fixer(&creds, &nup_path.path));
+
+        //DEBUG insertion
+        if nup_path.path.contains("r0") {
+            println!(
+                "------PROBLEMATIC NUP-URL in DOWNLOAD {}---",
+                &nup_path.path
+            );
+        }
+
         let _result = match download_file(&root_dir, &nup_path.path, &creds) {
             Ok(val) => {
                 counter += 1;
