@@ -28,7 +28,7 @@ pub fn compare_and_get_nups_paths(
                 if key.contains("REVERSE") {
                     println!("-------PROBLEMATIC KEY IN PROCESS-CHANGE {key}-------");
                     match &el["file"] {
-                        Some(val) => println!("---PROBLEMATIC NUP-URL {}---", val),
+                        Some(val) => println!("---PROBLEMATIC NUP-URL {}---\n", val),
                         None => error!("nup url is missing in update.ver"),
                     }
                 }
@@ -57,9 +57,9 @@ pub fn compare_and_get_nups_paths(
 
             //DEBUG insertion
             if key.contains("REVERSE") {
-                println!("-------PROBLEMATIC KEY IN PROCESS-CHANGE {key}-------");
+                println!("-------PROBLEMATIC KEY IN PROCESS-NEW {key}-------");
                 match &el["file"] {
-                    Some(val) => println!("---PROBLEMATIC NUP-URL {}---", val),
+                    Some(val) => println!("---PROBLEMATIC NUP-URL {}---\n", val),
                     None => error!("nup url is missing in update.ver"),
                 }
             }
