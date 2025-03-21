@@ -1,5 +1,5 @@
 use super::structs::Nups;
-use log::{error, info};
+use log::{error, info, warn};
 use std::collections::HashMap;
 
 pub fn compare_and_get_nups_paths(
@@ -27,8 +27,13 @@ pub fn compare_and_get_nups_paths(
                 //DEBUG insertion
                 if key.contains("REVERSE") {
                     println!("-------PROBLEMATIC KEY IN PROCESS-CHANGE {key}-------");
+                    warn!("-------PROBLEMATIC KEY IN PROCESS-CHANGE {key}-------");
                     match &el["file"] {
-                        Some(val) => println!("---PROBLEMATIC NUP-URL {}---\n", val),
+                        Some(val) => {
+                            println!("---PROBLEMATIC NUP-URL {}---\n", val);
+                            warn!("---PROBLEMATIC NUP-URL {}---\n", val);
+                        }
+
                         None => error!("nup url is missing in update.ver"),
                     }
                 }
@@ -58,8 +63,12 @@ pub fn compare_and_get_nups_paths(
             //DEBUG insertion
             if key.contains("REVERSE") {
                 println!("-------PROBLEMATIC KEY IN PROCESS-NEW {key}-------");
+                warn!("-------PROBLEMATIC KEY IN PROCESS-NEW {key}-------");
                 match &el["file"] {
-                    Some(val) => println!("---PROBLEMATIC NUP-URL {}---\n", val),
+                    Some(val) => {
+                        println!("---PROBLEMATIC NUP-URL {}---\n", val);
+                        warn!("---PROBLEMATIC NUP-URL {}---\n", val);
+                    }
                     None => error!("nup url is missing in update.ver"),
                 }
             }

@@ -1,5 +1,5 @@
 use super::structs::Credentials;
-use log::{error, info};
+use log::{error, info, warn};
 use pbr::ProgressBar;
 use reqwest::Client;
 use reqwest::Error;
@@ -48,6 +48,10 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
         //DEBUG insertion
         if nup_path.path.contains("r0") {
             println!(
+                "------PROBLEMATIC NUP-URL in DOWNLOAD {}---",
+                &nup_path.path
+            );
+            warn!(
                 "------PROBLEMATIC NUP-URL in DOWNLOAD {}---",
                 &nup_path.path
             );
