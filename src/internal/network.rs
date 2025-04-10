@@ -1,4 +1,5 @@
 use super::structs::Credentials;
+use std::{thread, time};
 use log::{error, info, warn};
 use pbr::ProgressBar;
 use reqwest::Client;
@@ -30,6 +31,7 @@ pub fn download_update_ver_file(
 
 pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credentials) {
     println!("Downloading NUP-files:");
+    let delay = time::Duration::from_secs(1);
     let mut pb = ProgressBar::new(nups_paths.len() as u64);
     pb.format("╢▌▌░╟");
 
@@ -57,6 +59,7 @@ pub fn download_nup_files(nups_paths: Vec<Nups>, root_dir: &str, creds: &Credent
             );
         }
 
+        thread::sleep(delay);
         let _result = match download_file(&root_dir, &nup_path.path, &creds) {
             Ok(val) => {
                 counter += 1;
