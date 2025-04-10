@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### 🚀 Features
+
+- Added 1 sec delay in loop to prevent 429 error from some mirrors
+
 ## [0.1.1] - 2025-03-18
 
 ### 🐛 Bug Fixes
