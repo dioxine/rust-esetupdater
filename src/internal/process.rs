@@ -1,4 +1,4 @@
-use crate::ROOT_DIR;
+use crate::{ROOT_DIR, HOST};
 use super::cache::{Cache, SectionState};
 use super::errors::AppError;
 use super::network::download_file;
@@ -19,7 +19,7 @@ pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>) -> Result<(), AppErr
 
     // Process current sections
     for (section_name, info) in ini_data {
-        let url = format!("https://upd.gleeze.com{}", info.file);
+        let url = format!("{}{}", HOST, info.file);
         let local_path = derive_local_path(&info.file); // Implement this
 
         modified_ini_data.insert(
@@ -62,6 +62,7 @@ pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>) -> Result<(), AppErr
                 eprintln!("Download failed: {}", e);
                 continue;
             }
+            println!("Downloaded: {}", local_path);
             // current_state.checksum = Some(calculate_checksum(&local_path));
         }
 
