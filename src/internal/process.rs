@@ -92,6 +92,13 @@ pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>) -> Result<(), AppErr
     // Serialize back to INI format
     let serialized = serialize_ini(&modified_ini_data)?;
     let dll_path = format!("{}/dll/update.ver", ROOT_DIR);
+
+    // Create parent directories if needed
+    if let Some(parent) = std::path::Path::new(&dll_path).parent() {
+        // println!("Creating parent directory: {:?}", url);
+        std::fs::create_dir_all(parent)?;
+    }
+
     std::fs::write(dll_path, &serialized)?;
 
     Ok(())
