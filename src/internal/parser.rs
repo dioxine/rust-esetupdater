@@ -55,7 +55,7 @@ impl<'de> Visitor<'de> for ModuleMapVisitor {
         }
 
         if !errors.is_empty() {
-            eprintln!("Encountered {} errors during parsing:", errors.len());
+            eprintln!("Encountered {} warnings during parsing:", errors.len());
             for (section_num, _) in errors {
                 eprintln!(
                     "[Section number {}] - Contains unused PICO structure",
