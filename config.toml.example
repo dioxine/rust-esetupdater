@@ -1,0 +1,21 @@
+# rename this file to config.toml
+
+host = "http://example.com"
+
+# root_dir is the directory, where final working structure will be built. 
+# no slashes. maybe will not work with long or relative paths. TODO path sanitizing.
+# if you want to make your webserver with updates, the easiest way is to make symlink 
+# of your web_root dir, for example "public_html" to "data" into directory where binary of this updater is placed.
+
+root_dir = "data"
+user_agent = "EEA Update (Windows; U; 64bit; BPC 11.0.2044.0; OS: 10.0.26100 SP 0.0 NT; HWF: 921b979f-686d-4fa2-bebb-3ffe2ab877da; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2107)"
+
+# these two parameters usually no need to touch, only if you want to customize kind of strange
+# remote server structures like https://example.com/eset_upd or want to build same stuff on your side.
+# no slashes at the end but with slash at the beginning. TODO path sanitizing.
+# example remote_sub_dir = "/eset_upd"
+# same rule for local_sub_dir
+
+remote_sub_dir = ""
+local_sub_dir = ""   
+
