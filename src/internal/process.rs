@@ -5,7 +5,6 @@ use super::parser::ModuleInfo;
 use super::utils::{
     derive_local_path, modified_path, remove_file_and_dir_if_empty, save_modified_ini,
 };
-// use crate::HOST;
 
 use indexmap::IndexMap;
 

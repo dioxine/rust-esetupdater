@@ -6,8 +6,6 @@ use std::fs;
 use std::fs::File;
 use std::path::Path;
 
-// use crate::{LOCAL_SUB_DIR, ROOT_DIR};
-
 // Helper function to determine local storage path
 pub fn derive_local_path(url_path: &str, root_dir: &str) -> String {
     let dirname = url_path.split('/').rev().nth(1).unwrap_or("default_dir");

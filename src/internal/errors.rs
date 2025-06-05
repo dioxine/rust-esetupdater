@@ -61,7 +61,7 @@ impl std::fmt::Display for AppError {
             AppError::SerializeINI(e) => write!(f, "Serialize INI error: {}", e),
             AppError::SerializeJSON(e) => write!(f, "Serialize JSON error: {}", e),
             AppError::Toml(e) => write!(f, "TOML error: {}", e),
-            AppError::EmptyConfig => write!(f, "Config file not found. Consider using CLI or creating 'config.toml' file manually."),
+            AppError::EmptyConfig => write!(f, "Config file not found. Consider using CLI or create 'config.toml' file manually using 'config.toml.example' as a template."),
         }
     }
 }
