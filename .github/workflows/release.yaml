@@ -31,24 +31,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-
-      # Install Linux dependencies (only for x86_64-unknown-linux-gnu)
-      - name: Install Linux dependencies
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            pkg-config \
-            libssl-dev \
-            zlib1g-dev
-
       # Set RUSTFLAGS only for Linux target
       - name: Build and upload
         env:
           RUSTFLAGS: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '-C target-feature=+crt-static -C link-args=-static' || '' }}
-          OPENSSL_DIR: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '/usr/lib/ssl' || '' }}
-          OPENSSL_STATIC: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '1' || '' }}
         uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: rust-esetupdater
