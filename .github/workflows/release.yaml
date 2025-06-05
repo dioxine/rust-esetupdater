@@ -15,7 +15,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: taiki-e/create-gh-release-action@v1
         with:
-          # (required) GitHub token for creating GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
 
   upload-assets:
@@ -32,27 +31,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: taiki-e/upload-rust-binary-action@v1
+
+      # Install Linux dependencies (only for x86_64-unknown-linux-gnu)
+      - name: Install Linux dependencies
+        if: matrix.target == 'x86_64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            pkg-config \
+            libssl-dev \
+            zlib1g-dev
+
+      # Set RUSTFLAGS only for Linux target
+      - name: Build and upload
+        env:
+          RUSTFLAGS: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '-C target-feature=+crt-static -C link-args=-static' || '' }}
+          OPENSSL_DIR: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '/usr/lib/ssl' || '' }}
+          OPENSSL_STATIC: ${{ matrix.target == 'x86_64-unknown-linux-gnu' && '1' || '' }}
+        uses: taiki-e/upload-rust-binary-action@v1
         with:
-          env:
-            RUSTFLAGS: "-C target-feature=+crt-static"
-          # (required) Comma-separated list of binary names (non-extension portion of filename) to build and upload.
-          # Note that glob pattern is not supported yet.
           bin: rust-esetupdater
-          # (optional) Target triple, default is host triple.
-          # This is optional but it is recommended that this always be set to
-          # clarify which target you are building for if macOS is included in
-          # the matrix because GitHub Actions changed the default architecture
-          # of macos-latest since macos-14.
           include: config.toml.example,README.md
           target: ${{ matrix.target }}
-          # (optional) On which platform to distribute the `.tar.gz` file.
-          # [default value: unix]
-          # [possible values: all, unix, windows, none]
           tar: unix
-          # (optional) On which platform to distribute the `.zip` file.
-          # [default value: windows]
-          # [possible values: all, unix, windows, none]
           zip: windows
-          # (required) GitHub token for uploading assets to GitHub Releases.
           token: ${{ secrets.GITHUB_TOKEN }}
