@@ -9,7 +9,13 @@ use super::utils::{
 
 use indexmap::IndexMap;
 
-pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>, host: &str, user_agent: &str, root_dir: &str, local_sub_dir: &str) -> Result<(), AppError> {
+pub fn process_ini(
+    ini_data: &IndexMap<String, ModuleInfo>,
+    host: &str,
+    user_agent: &str,
+    root_dir: &str,
+    local_sub_dir: &str,
+) -> Result<(), AppError> {
     let old_cache = Cache::load(root_dir);
     let mut new_cache = Cache {
         sections: IndexMap::new(),
@@ -87,7 +93,8 @@ pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>, host: &str, user_age
             // Downloader of files
             if let Err(e) = download_file(&url, &local_path, user_agent) {
                 log::error!("❌ Download failed: {}", e);
-                log::error!("");
+                // Remove absent section from modified INI data
+                modified_ini_data.swap_remove(section_name);
                 continue;
             } else {
                 log::info!("✅ Downloaded: {}", local_path);
@@ -131,9 +138,7 @@ pub fn process_ini(ini_data: &IndexMap<String, ModuleInfo>, host: &str, user_age
             }
         })
         // Propagate errors upwards if remove_file_and_dir_if_empty fails
-        .try_for_each(|orphan| {
-            remove_file_and_dir_if_empty(&orphan.local_path)
-        })?;
+        .try_for_each(|orphan| remove_file_and_dir_if_empty(&orphan.local_path))?;
 
     new_cache.save(root_dir);
 
