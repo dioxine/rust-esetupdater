@@ -5,12 +5,14 @@ use indexmap::IndexMap;
 mod internal;
 
 use internal::config::process_cfg;
-use internal::network::read_remote_ini_file;
+use internal::hyper::read_remote_ini_file;
+use internal::errors::AppError;
 use internal::parser::ModuleInfo;
 use internal::parser::deserialize_remote_ini;
-use internal::process::process_ini;
+// use internal::process::process_ini;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), AppError> {
+
     // Settings for logger
     simplelog::CombinedLogger::init(vec![
         simplelog::TermLogger::new(
@@ -32,7 +34,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ),
     ])?;
 
-    // Getting config from file or CLI or close program
+    // // Getting config from file or CLI or close program
 
     let final_config = match process_cfg() {
         Ok(config) => config,
@@ -52,23 +54,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Read the INI file
     let ini_data = read_remote_ini_file(
         format!("{}{}/dll/update.ver", host, remote_sub_dir).as_str(),
-        user_agent,
+        // "https://upd.gleeze.com/dll/update.ver"
+        // user_agent,
     )?;
 
     // Deserialize the INI file
     let module_map: IndexMap<String, ModuleInfo> = deserialize_remote_ini(&ini_data)?;
 
-    log::info!("Using host: {}", host);
-    log::info!("Root dir: {}", root_dir);
+    println!("{:?}", module_map);
 
-    log::info!("Starting processing...");
-    process_ini(&module_map, host, user_agent, root_dir, local_sub_dir)?;
+    // log::info!("Using host: {}", host);
+    // log::info!("Root dir: {}", root_dir);
 
-    log::info!("{}", "✅ Update completed successfully!");
+    // log::info!("Starting processing...");
+    // process_ini(&module_map, host, user_agent, root_dir, local_sub_dir)?;
 
-    // Getting remote and local sub directories
-    // let remote_sub_dir = config.remote_sub_dir.unwrap_or("".to_string());
-    // let local_sub_dir = config.local_sub_dir.unwrap_or("".to_string());
+    // log::info!("{}", "✅ Update completed successfully!");
+
+    // // Getting remote and local sub directories
+    // // let remote_sub_dir = config.remote_sub_dir.unwrap_or("".to_string());
+    // // let local_sub_dir = config.local_sub_dir.unwrap_or("".to_string());
 
     Ok(())
 }

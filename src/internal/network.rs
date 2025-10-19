@@ -1,45 +1,48 @@
-use super::errors::AppError;
-use reqwest::blocking::Client;
-use std::fs::File;
-use std::io::BufWriter;
-use std::io::Read;
-use std::io::copy;
+// use super::errors::AppError;
+// use reqwest::blocking::Client;
+// use std::fs::File;
+// use std::io::BufWriter;
+// use std::io::Read;
+// use std::io::copy;
 
-pub fn download_file(url: &str, local_path: &str, user_agent: &str) -> Result<(), AppError> {
-    // Create client and request
-    let client = Client::builder().user_agent(user_agent).build()?;
+// pub fn download_file(url: &str, local_path: &str, user_agent: &str) -> Result<(), AppError> {
+//     println!("Downloading File: {}", url);
 
-    let mut response = client
-        .get(url)
-        .basic_auth("", Some(""))
-        .send()?
-        .error_for_status()?;
+//     // Create client and request
+//     let client = Client::builder().user_agent(user_agent).build()?;
 
-    // Create parent directories if needed
-    if let Some(parent) = std::path::Path::new(local_path).parent() {
-        // log::info!("Creating parent directory: {:?}", url);
-        std::fs::create_dir_all(parent)?;
-    }
+//     let mut response = client
+//         .get(url)
+//         .basic_auth("", Some(""))
+//         .send()?
+//         .error_for_status()?;
 
-    // Stream directly to file
-    let file = File::create(local_path)?;
-    let mut dest_file = BufWriter::new(file);
-    copy(&mut response, &mut dest_file)?;
+//     // Create parent directories if needed
+//     if let Some(parent) = std::path::Path::new(local_path).parent() {
+//         // log::info!("Creating parent directory: {:?}", url);
+//         std::fs::create_dir_all(parent)?;
+//     }
 
-    Ok(())
-}
+//     // Stream directly to file
+//     let file = File::create(local_path)?;
+//     let mut dest_file = BufWriter::new(file);
+//     copy(&mut response, &mut dest_file)?;
 
-pub fn read_remote_ini_file(url: &str, user_agent: &str) -> Result<Vec<u8>, AppError> {
-    let client = Client::builder().user_agent(user_agent).build()?;
-   
-    let mut response = client
-        .get(url)
-        .basic_auth("", Some(""))
-        .send()?
-        .error_for_status()?;
+//     Ok(())
+// }
 
-    let mut content = Vec::new();
-    response.read_to_end(&mut content)?;
+// pub fn read_remote_ini_file(url: &str, user_agent: &str) -> Result<Vec<u8>, AppError> {
+//     println!("Downloading INI: {}", url);
+//     let client = Client::builder().user_agent(user_agent).build()?;
 
-    Ok(content)
-}
+//     let mut response = client
+//         .get(url)
+//         .basic_auth("", Some(""))
+//         .send()?
+//         .error_for_status()?;
+
+//     let mut content = Vec::new();
+//     response.read_to_end(&mut content)?;
+
+//     Ok(content)
+// }

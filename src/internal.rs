@@ -5,3 +5,4 @@ pub mod network;
 pub mod cache;
 pub mod utils;
 pub mod errors;
+pub mod hyper;

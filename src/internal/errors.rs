@@ -1,4 +1,7 @@
-use reqwest::Error as ReqwestError;
+use hyper::Error as HyperError;
+use hyper::http::uri::InvalidUri;
+use hyper_util::client::legacy::Error as RequestError;
+use log::SetLoggerError;
 use serde_ini::de::Error as ParseError;
 use serde_ini::ser::Error as SerializeIniError;
 use serde_json::Error as SerializeJsonError;
@@ -7,17 +10,38 @@ use toml::de::Error as TomlError;
 
 #[derive(Debug)]
 pub enum AppError {
-    Network(ReqwestError),
+    Log(SetLoggerError),
+    Uri(InvalidUri),
+    Hyper(HyperError),
+    Network(RequestError),
     Io(IoError),
     Parse(ParseError),
     SerializeINI(SerializeIniError),
     SerializeJSON(SerializeJsonError),
     Toml(TomlError),
-    EmptyConfig
+    EmptyConfig,
 }
 
-impl From<ReqwestError> for AppError {
-    fn from(e: ReqwestError) -> Self {
+impl From<SetLoggerError> for AppError {
+    fn from(e: SetLoggerError) -> Self {
+        AppError::Log(e)
+    }
+}
+
+impl From<InvalidUri> for AppError {
+    fn from(e: InvalidUri) -> Self {
+        AppError::Uri(e)
+    }
+}
+
+impl From<HyperError> for AppError {
+    fn from(e: HyperError) -> Self {
+        AppError::Hyper(e)
+    }
+}
+
+impl From<RequestError> for AppError {
+    fn from(e: RequestError) -> Self {
         AppError::Network(e)
     }
 }
@@ -55,13 +79,19 @@ impl From<TomlError> for AppError {
 impl std::fmt::Display for AppError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
+            AppError::Log(e) => write!(f, "Logger error: {}", e),
+            AppError::Uri(e) => write!(f, "Uri syntax error: {}", e),
+            AppError::Hyper(e) => write!(f, "Hyper error: {}", e),
             AppError::Network(e) => write!(f, "Network error: {}", e),
             AppError::Io(e) => write!(f, "IO error: {}", e),
             AppError::Parse(e) => write!(f, "Parse error: {}", e),
             AppError::SerializeINI(e) => write!(f, "Serialize INI error: {}", e),
             AppError::SerializeJSON(e) => write!(f, "Serialize JSON error: {}", e),
             AppError::Toml(e) => write!(f, "TOML error: {}", e),
-            AppError::EmptyConfig => write!(f, "Config file not found. Consider using CLI or creating 'config.toml' file manually."),
+            AppError::EmptyConfig => write!(
+                f,
+                "Config file not found. Use CLI or create 'config.toml' file manually."
+            ),
         }
     }
 }
