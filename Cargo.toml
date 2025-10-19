@@ -13,11 +13,12 @@ hyper-rustls = "0.27.7"
 hyper-tls = { version = "0.6.0", features = ["alpn", "vendored"] }
 hyper-util = { version = "0.1.15", features = ["client", "tokio"] }
 indexmap = { version = "2.9.0", features = ["serde"] }
+indicatif = "0.18.0"
 log = "0.4.27"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_ini = "0.2.0"
 serde_json = "1.0.140"
 simplelog = "0.12.2"
-tokio = { version = "1.46.1", features = ["fs", "macros", "rt-multi-thread"] }
+tokio = { version = "1.46.1", features = ["fs", "macros", "rt-multi-thread", "time"] }
 tokio-util = { version = "0.7.16", features = ["io"] }
 toml = "0.8.22"

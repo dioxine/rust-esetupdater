@@ -17,6 +17,8 @@ use futures::StreamExt;
 use tokio::fs::File;
 use tokio::io::AsyncWriteExt;
 
+use indicatif::{ProgressBar, ProgressStyle};
+
 use super::errors::AppError;
 
 async fn make_a_request(
@@ -93,6 +95,20 @@ pub async fn download_file(
 
     let res = make_a_request(username, password, url, user_agent).await?;
 
+    // Try to get content-length from response headers
+    let total_size = res
+        .headers()
+        .get("content-length")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.parse::<u64>().ok());
+
+    // Create progress bar
+    let pb = ProgressBar::new(total_size.unwrap_or(0));
+    pb.set_style(ProgressStyle::default_bar()
+        .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta})")
+        .unwrap()
+        .progress_chars("#>-"));
+
     // Create parent directories if needed
     if let Some(parent) = std::path::Path::new(local_path).parent() {
         tokio::fs::create_dir_all(parent).await?;
@@ -105,12 +121,16 @@ pub async fn download_file(
     let body = res.into_body();
     let mut stream = body.into_data_stream();
 
+    let mut downloaded = 0;
+
     while let Some(frame) = stream.next().await {
         let frame = frame?;
+        let chunk_size = frame.len();
         file.write_all(&frame).await?;
+        downloaded += chunk_size;
+        // Update progress bar
+        pb.set_position(downloaded as u64);
     }
-
-    file.flush().await?;
 
     Ok(())
 }
