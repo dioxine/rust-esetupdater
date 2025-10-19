@@ -29,20 +29,6 @@ async fn make_a_request(
 ) -> Result<Response<Incoming>, AppError> {
     let url = url.parse::<Uri>().unwrap();
 
-    // Get the host and the port
-    // let scheme = url.scheme_str().expect("uri has no scheme");
-    // let host = url.host().expect("uri has no host");
-    // let port = url.port_u16().unwrap_or(80);
-
-    // println!("Username is: {}, Password is : {}", username, password);
-    // println!("Scheme is {}", scheme);
-    // println!("Host is {}", host);
-    // println!("Port is {}", port);
-    // println!("User-Agent is {}", user_agent);
-
-    // let address = format!("{}://{}:{}", scheme, host, port);
-    // println!("Address is: {}", address);
-
     // Encode the credentials
     let credentials = format!("{}:{}", username, password);
     let encoded_credentials = general_purpose::STANDARD.encode(credentials.as_bytes());
@@ -128,7 +114,7 @@ pub async fn download_file(
         let chunk_size = frame.len();
         file.write_all(&frame).await?;
         downloaded += chunk_size;
-        // Update progress bar
+        // Update progress bar  
         pb.set_position(downloaded as u64);
     }
 
