@@ -2,6 +2,11 @@
 
 host = "http://example.com"
 
+# Username and password for Basic Auth
+
+username = ""
+password = ""
+
 # root_dir is the directory, where final working structure will be built. 
 # no slashes. maybe will not work with long or relative paths. TODO path sanitizing.
 # if you want to make your webserver with updates, the easiest way is to make symlink 
