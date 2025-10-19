@@ -6,6 +6,7 @@ use serde_ini::de::Error as ParseError;
 use serde_ini::ser::Error as SerializeIniError;
 use serde_json::Error as SerializeJsonError;
 use std::io::Error as IoError;
+use tokio::task::JoinError;
 use toml::de::Error as TomlError;
 
 #[derive(Debug)]
@@ -20,6 +21,7 @@ pub enum AppError {
     SerializeJSON(SerializeJsonError),
     Toml(TomlError),
     EmptyConfig,
+    TaskJoin(JoinError),
 }
 
 impl From<SetLoggerError> for AppError {
@@ -76,6 +78,12 @@ impl From<TomlError> for AppError {
     }
 }
 
+impl From<JoinError> for AppError {
+    fn from(e: JoinError) -> Self {
+        AppError::TaskJoin(e)
+    }
+}
+
 impl std::fmt::Display for AppError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
@@ -92,6 +100,7 @@ impl std::fmt::Display for AppError {
                 f,
                 "Config file not found. Use CLI or create 'config.toml' file manually."
             ),
+            AppError::TaskJoin(e) => write!(f, "Tokio task join error: {}", e),
         }
     }
 }

@@ -6,6 +6,8 @@ use std::path::Path;
 #[derive(Debug, Deserialize, Default)]
 pub struct Config {
     pub host: String,
+    pub username: String,
+    pub password: String,
     pub user_agent: String,
     pub root_dir: String,
     pub remote_sub_dir: Option<String>,
