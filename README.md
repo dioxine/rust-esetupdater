@@ -4,7 +4,13 @@ structured update.ver file you can use on your own mirror.
 
 BasicAuth is working now.
 
-Rename config.toml.example to config.toml, read comments in it, edit, change ```host``` to the actual server you have access and you are ready to go! Also supports command line directives so you can use programm without config file. Only ```host``` and ```root_dir``` parameters are accessible via command line. ```user-agent``` in that case will be used built-it.
+Rename config.toml.example to config.toml, read comments in it, edit, change ```host``` to the actual server,
+then in advance, you might be know ```username``` and ```password```  of that resource.
+If endpoint does not even has BasicAuth, and you entered them in config.toml, no problems, they will be ignored.
+
+So, if you have got access to server - you are ready to go! 
+
+Also supports command line directives so you can use programm without config file. Only ```host``` and ```root_dir``` parameters are accessible via command line. ```user-agent``` in that case will be used built-it.
 
 ```-h``` will show you all variants of arguments. 
 
