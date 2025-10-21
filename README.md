@@ -15,11 +15,6 @@ Functionality of non-standard ports, like https://example.com:12345 i have not t
 
 So, if you have got access to server - you are ready to go! 
 
-Also supports command line directives so you can use programm without config file. Only ```host``` and ```root_dir``` parameters are accessible via command line. ```user-agent``` in that case will be used built-it.
-
-```-h``` will show you all variants of arguments. 
-
-
 PLEASE!!! Be carefull in config.toml
 i mean NO overslashes! No beforingslashes, just do like a wrote in examples, please
 
