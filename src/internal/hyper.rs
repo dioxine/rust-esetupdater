@@ -45,8 +45,6 @@ async fn make_a_request(
         .body(Empty::<Bytes>::new())
         .unwrap(); // Use Empty for no body
 
-    // println!("Request is: {:?}", req);
-
     // Create the Hyper client
     let https = HttpsConnector::new();
     let client = Client::builder(TokioExecutor::new()).build::<_, Empty<Bytes>>(https);
@@ -120,3 +118,4 @@ pub async fn download_file(
 
     Ok(())
 }
+ 
