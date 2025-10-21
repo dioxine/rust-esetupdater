@@ -8,7 +8,10 @@ Rename config.toml.example to config.toml, read comments in it, edit, change ```
 then in advance, you might be know ```username``` and ```password```  of that resource.
 If endpoint does not even has BasicAuth, and you entered them in config.toml, no problems, they will be ignored.
 
-Functionality of ports, like https:/example.com:12345 i have not tested, but should work. TELL ME!
+Redirections at this point are not working! If your server is accessible only with https, you SHOULD set https-address
+in config.toml 
+
+Functionality of non-standard ports, like https://example.com:12345 i have not tested, but should work. TELL ME!
 
 So, if you have got access to server - you are ready to go! 
 
