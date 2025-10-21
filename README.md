@@ -21,7 +21,7 @@ Also supports command line directives so you can use programm without config fil
 
 
 PLEASE!!! Be carefull in config.toml
-i mean NO overslashes! No beforingslashes, just do, like a wrote in examples, please
+i mean NO overslashes! No beforingslashes, just dolike a wrote in examples, please
 
 Feel free to test it. Will be very glad for reviews!
 
