@@ -10,9 +10,10 @@ use std::path::Path;
 
 // Helper function to determine local storage path
 pub fn derive_local_path(url_path: &str, root_dir: &str) -> String {
-    let dirname = url_path.split('/').rev().nth(1).unwrap_or("default_dir");
+    let _dirname = url_path.split('/').rev().nth(1).unwrap_or("");  // temp change "default_dir" to ""
     let filename = url_path.split('/').last().unwrap_or("default.nup");
-    format!("{}/modules/{}/{}", root_dir, dirname, filename)
+    // format!("{}/modules/{}/{}", root_dir, dirname, filename); 
+    format!("{}/modules/{}", root_dir, filename)
 }
 
 // Helper function to modify the path for modified INI

@@ -7,7 +7,10 @@ use super::utils::{
 };
 // use crate::HOST;
 
+use tokio::time::{sleep, Duration};
+
 use indexmap::IndexMap;
+use rand::Rng;
 
 pub async fn process_ini(
     ini_data: &IndexMap<String, ModuleInfo>,
@@ -25,9 +28,12 @@ pub async fn process_ini(
 
     let mut modified_ini_data: IndexMap<String, ModuleInfo> = IndexMap::new();
 
+    // Random generator init used for simulation of delay while downloading
+    let mut rng = rand::rng();
+
     // Process current sections
     for (section_name, info) in ini_data {
-        let url = format!("{}{}", host, info.file);
+        let url = format!("{}/dll/{}", host, info.file);
         let local_path = derive_local_path(&info.file, root_dir); // Implement this
 
         modified_ini_data.insert(
@@ -84,7 +90,7 @@ pub async fn process_ini(
                 true
             } // True if absent
         };
-
+        
         if should_download {
             // for debugging REVERSE sections purposes
             if section_name.contains("REVERSE") {
@@ -92,7 +98,13 @@ pub async fn process_ini(
                 log::debug!("REVERSE section name: {}", section_name);
                 log::debug!("REVERSE section info: {:#?}", info);
             }
+            
             // Downloader of files
+            // Simulating delay
+            
+            let delay_ms = rng.random_range(500..=1000);
+            sleep(Duration::from_millis(delay_ms)).await;
+
             if let Err(e) = download_file(username, password, &url, user_agent, &local_path).await {
                 log::error!("❌ Download failed: {}", e);
                 // Remove absent section from modified INI data
