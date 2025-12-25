@@ -45,8 +45,11 @@ pub async fn process_ini(
                 .unwrap_or(format!("{remote_custom_additional_path}/").as_str()),
             info.file.trim_start_matches('/')
         );
-        println!("This is formed URL: {url}");
+        println!("This is formed remote URL: {url}");
+
         let local_path = derive_local_path(&info.file, root_dir);
+
+        println!("This is formed local path: {local_path}");
 
         modified_ini_data.insert(
             section_name.to_string(),
