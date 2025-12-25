@@ -53,8 +53,8 @@ async fn main() -> Result<(), AppError> {
     let root_dir = &final_config.root_dir;
     let remote_main_sub_dir = &final_config.remote_main_sub_dir.unwrap_or("".to_string());
     let local_main_sub_dir = &final_config.local_main_sub_dir.unwrap_or("".to_string());
-    let remote_custom_additional_path = &final_config
-        .remote_custom_additional_path
+    let remote_custom_modules_dir = &final_config
+        .remote_custom_modules_dir
         .unwrap_or("".to_string());
 
     // Read the INI file
@@ -83,7 +83,7 @@ async fn main() -> Result<(), AppError> {
         user_agent,
         root_dir,
         local_main_sub_dir,
-        remote_custom_additional_path,
+        remote_custom_modules_dir,
     )
     .await?;
 
