@@ -10,7 +10,17 @@ use std::path::Path;
 pub fn derive_local_path(url_path: &str, root_dir: &str) -> String {
     let dirname = url_path.split('/').rev().nth(1).unwrap_or("");
     let filename = url_path.split('/').last().unwrap_or("default.nup");
-    format!("{}/modules/{}/{}", root_dir, dirname, filename) 
+    // Sanitize and form local path without trailing or doubling slashes
+    format!(
+        "{}/modules{}{}",
+        root_dir,
+        dirname
+            .trim_matches('/')
+            .is_empty()
+            .then_some("/")
+            .unwrap_or(format!("/{dirname}/").as_str()),
+        filename
+    )
 }
 
 // Helper function to modify the path for modified INI
@@ -33,9 +43,17 @@ pub fn create_cache_file(path: &str) -> Result<(), AppError> {
 }
 
 // Helper function to save modified INI
-pub fn save_modified_ini(data: &IndexMap<String, ModuleInfo>, root_dir: &str, local_main_sub_dir: &str) -> Result<(), AppError> {
+pub fn save_modified_ini(
+    data: &IndexMap<String, ModuleInfo>,
+    root_dir: &str,
+    local_main_sub_dir: &str,
+) -> Result<(), AppError> {
     let serialized = serialize_ini(data)?;
-    let ini_path = format!("{}/{}/dll/update.ver", root_dir.trim_matches('/'), local_main_sub_dir.trim_matches('/')); // check!
+    let ini_path = format!(
+        "{}/{}/dll/update.ver",
+        root_dir.trim_matches('/'),
+        local_main_sub_dir.trim_matches('/')
+    ); // check!
 
     if let Some(parent) = Path::new(&ini_path).parent() {
         fs::create_dir_all(parent)?;
