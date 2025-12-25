@@ -69,8 +69,6 @@ async fn main() -> Result<(), AppError> {
     // Deserialize the INI file
     let module_map: IndexMap<String, ModuleInfo> = deserialize_remote_ini(&ini_data)?;
 
-    // println!("{:?}", module_map);
-
     log::info!("Using host: {}", host);
     log::info!("Root dir: {}", root_dir);
 
@@ -88,10 +86,6 @@ async fn main() -> Result<(), AppError> {
     .await?;
 
     log::info!("{}", "✅ Update completed successfully!");
-
-    // Getting remote and local sub directories
-    // let remote_main_sub_dir = config.remote_main_sub_dir.unwrap_or("".to_string());
-    // let local_main_sub_dir = config.local_main_sub_dir.unwrap_or("".to_string());
 
     Ok(())
 }
