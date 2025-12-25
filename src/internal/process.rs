@@ -20,7 +20,7 @@ pub async fn process_ini(
     user_agent: &str,
     root_dir: &str,
     local_main_sub_dir: &str,
-    remote_custom_additional_path: &str,
+    remote_custom_modules_dir: &str,
 ) -> Result<(), AppError> {
     let old_cache = Cache::load(root_dir);
     let mut new_cache = Cache {
@@ -38,11 +38,11 @@ pub async fn process_ini(
         let url = format!(
             "{}{}{}",
             host.trim_end_matches('/').to_string(),
-            remote_custom_additional_path
+            remote_custom_modules_dir
                 .trim_matches('/')
                 .is_empty()
                 .then_some("/")
-                .unwrap_or(format!("{remote_custom_additional_path}/").as_str()),
+                .unwrap_or(format!("/{remote_custom_modules_dir}/").as_str()),
             info.file.trim_start_matches('/')
         );
         println!("This is formed remote URL: {url}");
