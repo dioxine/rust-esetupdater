@@ -51,14 +51,17 @@ async fn main() -> Result<(), AppError> {
     let password = &final_config.password;
     let user_agent = &final_config.user_agent;
     let root_dir = &final_config.root_dir;
-    let local_sub_dir = &final_config.local_sub_dir.unwrap_or("".to_string());
-    let remote_sub_dir = &final_config.remote_sub_dir.unwrap_or("".to_string());
+    let remote_main_sub_dir = &final_config.remote_main_sub_dir.unwrap_or("".to_string());
+    let local_main_sub_dir = &final_config.local_main_sub_dir.unwrap_or("".to_string());
+    let remote_custom_additional_path = &final_config
+        .remote_custom_additional_path
+        .unwrap_or("".to_string());
 
     // Read the INI file
     let ini_data = read_remote_ini_file(
         username,
         &password,
-        format!("{}{}/dll/update.ver", host, remote_sub_dir).as_str(),
+        format!("{}{}/dll/update.ver", host, remote_main_sub_dir).as_str(),
         user_agent,
     )
     .await?;
@@ -79,15 +82,16 @@ async fn main() -> Result<(), AppError> {
         host,
         user_agent,
         root_dir,
-        local_sub_dir,
+        local_main_sub_dir,
+        remote_custom_additional_path,
     )
     .await?;
 
     log::info!("{}", "✅ Update completed successfully!");
 
     // Getting remote and local sub directories
-    // let remote_sub_dir = config.remote_sub_dir.unwrap_or("".to_string());
-    // let local_sub_dir = config.local_sub_dir.unwrap_or("".to_string());
+    // let remote_main_sub_dir = config.remote_main_sub_dir.unwrap_or("".to_string());
+    // let local_main_sub_dir = config.local_main_sub_dir.unwrap_or("".to_string());
 
     Ok(())
 }

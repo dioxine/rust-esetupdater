@@ -7,7 +7,7 @@ use super::utils::{
 };
 // use crate::HOST;
 
-use tokio::time::{sleep, Duration};
+use tokio::time::{Duration, sleep};
 
 use indexmap::IndexMap;
 use rand::Rng;
@@ -19,7 +19,8 @@ pub async fn process_ini(
     host: &str,
     user_agent: &str,
     root_dir: &str,
-    local_sub_dir: &str,
+    local_main_sub_dir: &str,
+    remote_custom_additional_path: &str,
 ) -> Result<(), AppError> {
     let old_cache = Cache::load(root_dir);
     let mut new_cache = Cache {
@@ -33,8 +34,10 @@ pub async fn process_ini(
 
     // Process current sections
     for (section_name, info) in ini_data {
-        let url = format!("{}/dll/{}", host, info.file);  // especial for spylog
-        let local_path = derive_local_path(&info.file, root_dir); // Implement this
+        let url = format!("{}/{}/{}", host.trim_end_matches('/'), remote_custom_additional_path.trim_matches('/'), info.file.trim_matches('/'));
+        // let url = format!("{}/{}/{}", host.trim_end_matches('/'), info.file.split('/').rev().nth(0).unwrap_or("dll"), info.file.split('/').last().unwrap_or("default.nup"));
+        println!("This is formed USL: {url}");
+        let local_path = derive_local_path(&info.file, root_dir);
 
         modified_ini_data.insert(
             section_name.to_string(),
@@ -90,7 +93,7 @@ pub async fn process_ini(
                 true
             } // True if absent
         };
-        
+
         if should_download {
             // for debugging REVERSE sections purposes
             if section_name.contains("REVERSE") {
@@ -98,10 +101,10 @@ pub async fn process_ini(
                 log::debug!("REVERSE section name: {}", section_name);
                 log::debug!("REVERSE section info: {:#?}", info);
             }
-            
+
             // Downloader of files
             // Simulating delay
-            
+
             let delay_ms = rng.random_range(500..=1000);
             sleep(Duration::from_millis(delay_ms)).await;
 
@@ -158,7 +161,7 @@ pub async fn process_ini(
 
     // Serialize and same back modified INI
 
-    save_modified_ini(&modified_ini_data, root_dir, local_sub_dir)?;
+    save_modified_ini(&modified_ini_data, root_dir, local_main_sub_dir)?;
 
     Ok(())
 }

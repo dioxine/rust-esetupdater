@@ -12,7 +12,7 @@ use std::path::Path;
 pub fn derive_local_path(url_path: &str, root_dir: &str) -> String {
     let dirname = url_path.split('/').rev().nth(1).unwrap_or("modules");
     let filename = url_path.split('/').last().unwrap_or("default.nup");
-    format!("{}/{}/{}", root_dir, dirname, filename); 
+    format!("{}/{}/{}", root_dir, dirname, filename) 
 }
 
 // Helper function to modify the path for modified INI

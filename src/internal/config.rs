@@ -10,8 +10,9 @@ pub struct Config {
     pub password: String,
     pub user_agent: String,
     pub root_dir: String,
-    pub remote_sub_dir: Option<String>,
-    pub local_sub_dir: Option<String>,
+    pub remote_main_sub_dir: Option<String>,
+    pub remote_custom_additional_path: Option<String>,
+    pub local_main_sub_dir: Option<String>,
 }
 
 impl Config {
@@ -58,7 +59,7 @@ pub fn process_cfg() -> Result<Config, AppError> {
     };
 
     // Injecting default user_agent in case of no config file
-    config.user_agent = "EEA Update (Windows; U; 64bit; BPC 11.0.2044.0; OS: 10.0.26100 SP 0.0 NT; HWF: 921b979f-686d-4fa2-bebb-3ffe2ab877da; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2107)".to_string();
+    config.user_agent = "EEA Update (Windows; U; 64bit; BPC 12.1.2057.3; OS: 10.0.26100 SP 0.0 NT; HWF: D3340871-2FD1-4D7D-9790-E313EAA6E098; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2103)".to_string();
 
     // Apply CLI overrides
     let final_config = Config {
