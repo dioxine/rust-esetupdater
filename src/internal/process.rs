@@ -34,20 +34,16 @@ pub async fn process_ini(
 
     // Process current sections
     for (section_name, info) in ini_data {
+        // sanitize and form url
         let url = format!(
-            "{}/{}/{}",
-            host.trim_end_matches('/'),
-            remote_custom_additional_path.trim_matches('/'),
+            "{}{}{}",
+            format!("{}/", host.trim_end_matches('/')),
+            format!("{}/", remote_custom_additional_path.trim_matches('/')),
             info.file.trim_start_matches('/')
         );
 
-        println!("This is HOST: {}", host.trim_end_matches('/'));
-        println!(
-            "This is CUSTOM: {}",
-            remote_custom_additional_path.trim_matches('/')
-        );
-        println!("This is PATH: {}", info.file.trim_start_matches('/'));
-        
+        println!("This is final URL: {}", url);
+
         let local_path = derive_local_path(&info.file, root_dir);
 
         modified_ini_data.insert(
