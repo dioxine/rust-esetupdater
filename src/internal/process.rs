@@ -34,7 +34,7 @@ pub async fn process_ini(
 
     // Process current sections
     for (section_name, info) in ini_data {
-        // Sanitize and form url without trailing or doubling slashes
+        // Sanitize and form remote url without trailing or doubling slashes
         let url = format!(
             "{}{}{}",
             host.trim_end_matches('/').to_string(),

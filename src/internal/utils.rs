@@ -6,16 +6,11 @@ use std::fs;
 use std::fs::File;
 use std::path::Path;
 
-// use crate::{LOCAL_SUB_DIR, ROOT_DIR};
-
 // Helper function to form local storage path
 pub fn derive_local_path(url_path: &str, root_dir: &str) -> String {
     let dirname = url_path.split('/').rev().nth(1).unwrap_or("");
-
-    println!("This is DIRNAME: {}", dirname);
-
     let filename = url_path.split('/').last().unwrap_or("default.nup");
-    format!("{}/{}/{}", root_dir, dirname, filename) 
+    format!("{}/modules/{}/{}", root_dir, dirname, filename) 
 }
 
 // Helper function to modify the path for modified INI
