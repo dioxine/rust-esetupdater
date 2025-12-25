@@ -11,6 +11,4 @@ If endpoint does not even has BasicAuth, and you entered them in config.toml, no
 Redirections at this point are not working! If your server is accessible only with https, you SHOULD set https-address
 in config.toml 
 
-Functionality of non-standard ports, like https://example.com:12345 i have not tested, but should work.
 
-TODO: Sanitaze paths.
