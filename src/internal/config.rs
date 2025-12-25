@@ -59,7 +59,7 @@ pub fn process_cfg() -> Result<Config, AppError> {
     };
 
     // Injecting default user_agent in case of no config file
-    config.user_agent = "EEA Update (Windows; U; 64bit; BPC 12.1.2057.3; OS: 10.0.26100 SP 0.0 NT; HWF: D3340871-2FD1-4D7D-9790-E313EAA6E098; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2103)".to_string();
+    config.user_agent = "EEA Update (Windows; U; 64bit; BPC 12.1.2057.3; OS: 10.0.26100 SP 0.0 NT; HWF: E7638134-89F8-4225-8E68-1686E448B82C; PLOC ru_ru; PCODE 107.0.0; PAR -1; ATH -1; DC 0; PLID 3AC-9SP-9D9; SEAT 154b3474; RET 2103)".to_string();
 
     // Apply CLI overrides
     let final_config = Config {
