@@ -35,9 +35,9 @@ pub fn create_cache_file(path: &str) -> Result<(), AppError> {
 }
 
 // Helper function to save modified INI
-pub fn save_modified_ini(data: &IndexMap<String, ModuleInfo>, root_dir: &str, local_sub_dir: &str) -> Result<(), AppError> {
+pub fn save_modified_ini(data: &IndexMap<String, ModuleInfo>, root_dir: &str, local_main_sub_dir: &str) -> Result<(), AppError> {
     let serialized = serialize_ini(data)?;
-    let ini_path = format!("{}{}/dll/update.ver", root_dir, local_sub_dir);
+    let ini_path = format!("{}/{}/dll/update.ver", root_dir.trim_matches('/'), local_main_sub_dir.trim_matches('/')); // check!
 
     if let Some(parent) = Path::new(&ini_path).parent() {
         fs::create_dir_all(parent)?;
