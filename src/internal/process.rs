@@ -34,16 +34,18 @@ pub async fn process_ini(
 
     // Process current sections
     for (section_name, info) in ini_data {
-        // sanitize and form url
+        // Sanitize and form url without trailing or doubling slashes
         let url = format!(
             "{}{}{}",
-            format!("{}/", host.trim_end_matches('/')),
-            format!("{}/", remote_custom_additional_path.trim_matches('/')),
+            host.trim_end_matches('/').to_string(),
+            remote_custom_additional_path
+                .trim_matches('/')
+                .is_empty()
+                .then_some("/")
+                .unwrap_or(format!("{remote_custom_additional_path}/").as_str()),
             info.file.trim_start_matches('/')
         );
-
-        println!("This is final URL: {}", url);
-
+        println!("This is formed URL: {url}");
         let local_path = derive_local_path(&info.file, root_dir);
 
         modified_ini_data.insert(
