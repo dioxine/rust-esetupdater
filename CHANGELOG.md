@@ -2,11 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - 2025-12-25
+## [0.6.0] - 2025-12-27
 
 ### 🚀 Features
 
 - Added paths sanitizing and new parameter \'remote_custom_modules_dir\'
+
+### ⚙️ Miscellaneous Tasks
+
+- Some cleanup
+- Update README.MD
 
 ## [0.5.9] - 2025-10-19
 
