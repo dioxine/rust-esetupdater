@@ -2,3 +2,4 @@
 /data
 output.log
 config.toml
+release.sh
