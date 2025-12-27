@@ -17,9 +17,10 @@ root_dir = "data"
 # custom User-Agent string
 user_agent = "" 
 
-# these two parameters usually no need to touch, only if you want to customize kind of strange
+# these two parameters usually no need to touch, only if you found such a strange
 # remote server structures like https://example.com/eset_upd or want to build same on your side
 # example remote_main_sub_dir = "/eset_upd"
+# same rule for local_main_sub_dir if yout want to make some stranges on your side 
 
 remote_main_sub_dir = ""
 local_main_sub_dir = ""
