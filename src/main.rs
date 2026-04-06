@@ -53,15 +53,25 @@ async fn main() -> Result<(), AppError> {
     let root_dir = &final_config.root_dir;
     let remote_main_sub_dir = &final_config.remote_main_sub_dir.unwrap_or("".to_string());
     let local_main_sub_dir = &final_config.local_main_sub_dir.unwrap_or("".to_string());
+    let remote_custom_dll_dir = &final_config
+        .remote_custom_dll_dir
+        .unwrap_or("dll".to_string());
     let remote_custom_modules_dir = &final_config
         .remote_custom_modules_dir
         .unwrap_or("".to_string());
 
     // Read the INI file
+    
+    let dll_dir = if remote_custom_dll_dir.trim_matches('/').is_empty() {
+        "/".to_string()
+    } else {
+        format!("/{remote_custom_dll_dir}/")
+    };
+
     let ini_data = read_remote_ini_file(
         username,
         &password,
-        format!("{}{}/dll/update.ver", host, remote_main_sub_dir).as_str(),
+        format!("{}{}{}update.ver", host, remote_main_sub_dir, dll_dir).as_str(),
         user_agent,
     )
     .await?;

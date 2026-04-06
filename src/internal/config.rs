@@ -11,6 +11,7 @@ pub struct Config {
     pub user_agent: String,
     pub root_dir: String,
     pub remote_main_sub_dir: Option<String>,
+    pub remote_custom_dll_dir: Option<String>,
     pub remote_custom_modules_dir: Option<String>,
     pub local_main_sub_dir: Option<String>,
 }
