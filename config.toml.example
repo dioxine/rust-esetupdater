@@ -1,0 +1,33 @@
+# rename this file to config.toml
+
+# host URL, can be HTTP(s). non-standart ports are allowed inline
+host = "http://example.com"
+
+# Username and password for Basic Auth
+
+username = ""
+password = ""
+
+# root_dir is the directory, where final working structure will be built.
+# if you want to make your webserver with updates, the easiest way is to make symlink
+# of your web_root dir, for example "public_html" to "data" into directory where binary of this updater is placed.
+
+root_dir = "data"
+
+# custom User-Agent string
+user_agent = ""
+
+# these two parameters usually no need to touch, only if you found such a strange
+# remote server structures like https://example.com/eset_upd or want to build same on your side
+# example remote_main_sub_dir = "/eset_upd"
+# same rule for local_main_sub_dir if yout want to make some stranges on your side
+
+remote_main_sub_dir = ""
+local_main_sub_dir = ""
+
+# remote_custom_dll_dir is to fix update.ver file path manually (advanced)
+remote_custom_dll_dir = "dll"
+
+# remote_custom_modules_dir is to fix NUP files path manually after analyzing update.ver (advanced)
+remote_custom_modules_dir = ""
+
