@@ -164,7 +164,7 @@ pub async fn process_ini(
         // Propagate errors upwards if remove_file_and_dir_if_empty fails
         .try_for_each(|orphan| remove_file_and_dir_if_empty(&orphan.local_path))?;
 
-    new_cache.save(root_dir);
+    new_cache.save(root_dir)?;
 
     // Serialize and same back modified INI
 

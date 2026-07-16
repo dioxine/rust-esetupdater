@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use indexmap::IndexMap;
 use std::path::Path;
+use super::errors::AppError;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SectionState {
@@ -29,10 +30,19 @@ impl Cache {
         }
     }
 
-    pub fn save(&self, root_dir: &str) {
+    pub fn save(&self, root_dir: &str) -> Result<(), AppError> {
         let cache_path = format!("{}/cache.json", root_dir);
         let data = serde_json::to_string_pretty(self).expect("Failed to serialize cache");
-        std::fs::write(&cache_path, data).expect("Failed to write cache");
+        std::fs::write(&cache_path, data).map_err(|e| {
+            // Create a clear, human-readable message explaining the root cause
+            let custom_msg = format!(
+                "Cannot create 'cache.json' file in root directory '{}' because the directory does not exist or is unavailable. System error message:", 
+                root_dir
+            );
+            // Construct a new IoError preserving the original error kind but updating the message
+            std::io::Error::new(e.kind(), format!("{} {}", custom_msg, e))
+        })?;
+        Ok(())
     }
 }
 

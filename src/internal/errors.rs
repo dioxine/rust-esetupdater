@@ -20,8 +20,8 @@ pub enum AppError {
     SerializeINI(SerializeIniError),
     SerializeJSON(SerializeJsonError),
     Toml(TomlError),
-    EmptyConfig,
     TaskJoin(JoinError),
+    EmptyConfig,
 }
 
 impl From<SetLoggerError> for AppError {
